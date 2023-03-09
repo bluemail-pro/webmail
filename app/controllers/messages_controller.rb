@@ -20,14 +20,14 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
     @message.user = current_user
-    @message.from = current_user.email
+    @message.from = "#{current_user.name} <#{current_user.email}>"
 
     message_data = {
       subject: message_params[:subject],
       body: message_params[:body]
     }
 
-    email=UserMessagesMailer.send_message(current_user.email, message_params[:to], message_data)
+    email=UserMessagesMailer.send_message(@message.from, message_params[:to], message_data)
     email.deliver
 
     respond_to do |format|
