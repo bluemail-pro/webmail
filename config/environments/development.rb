@@ -46,7 +46,7 @@ Rails.application.configure do
     address: 'mail.bluemail.pro',
     port: 587,
     domain: 'bluemail.pro',
-    user_name: 'matthias',
+    user_name: ENV['smtp_user'],
     password: ENV['smtp_passwd'],
     authentication: 'plain',
     enable_starttls: true,

@@ -5,7 +5,6 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
    def new
-     STDOUT.puts params.to_s
      super
    end
 

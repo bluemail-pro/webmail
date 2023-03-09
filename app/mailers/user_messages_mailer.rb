@@ -1,10 +1,10 @@
 class UserMessagesMailer < ApplicationMailer
-  def test(recipient)
+  def send_message(sender, recipient, message)
     mail(
-      to: 'matthias@matthiasclee.com',
-      from: 'matthias@bluemail.pro',
-      subject: 'asd',
-      body: 'hi'
+      to: recipient,
+      from: sender,
+      subject: message[:subject],
+      body: message[:body]
     )
   end
 end
