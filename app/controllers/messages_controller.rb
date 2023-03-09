@@ -38,6 +38,12 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if email.deliver
+        imap = Net::IMAP.new('mail.bluemail.pro', 993, true, nil, false)
+        imap.login('matthias', 'my_password_')
+        imap.append("Sent", email.to_s, [:Seen])
+        imap.logout
+        imap.disconnect
+
         format.html { redirect_to message_url(@message), notice: "Message sent" }
         format.json { render :show, status: :created, location: @message }
       else
