@@ -35,10 +35,9 @@ class MessagesController < ApplicationController
     content_type = content_types[message_params[:content_type]]
 
     email=UserMessagesMailer.send_message(@message.from, message_params[:to], message_data, content_type: content_type)
-    email.deliver
 
     respond_to do |format|
-      if @message.save
+      if email.deliver
         format.html { redirect_to message_url(@message), notice: "Message sent" }
         format.json { render :show, status: :created, location: @message }
       else
