@@ -2,6 +2,8 @@
 
 <h1>Messages</h1>
 
+<%= link_to "New message", new_message_path %>
+
 <div id="messages">
   <% @messages.each do |message| %>
     <%= render message %>
@@ -11,4 +13,3 @@
   <% end %>
 </div>
 
-<%= link_to "New message", new_message_path %>
