@@ -11,7 +11,8 @@ class MessagesController < ApplicationController
 
     @messages = []
     @imap.search(['ALL']).each do |message_id|
-      @messages << @imap.fetch(message_id, 'ALL')[0]
+      message = @imap.fetch(message_id, 'ALL')[0]
+      @messages << message if !message.attr['FLAGS'].include?(:Deleted)
     end
 
     @mailboxes = @imap.list("", "*").map {|f| f.name}
@@ -29,7 +30,6 @@ class MessagesController < ApplicationController
     message_rfc822 = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
     @part = params[:part].to_i || 0
     @parts = Mail.read_from_string(message_rfc822).part
-    @message_contents_a = Mail.read_from_string(message_rfc822)
     @message_contents = Mail.read_from_string(message_rfc822).part[@part].body.to_s.gsub("\n", "<br>").gsub("<script", "&#60;script").gsub("</script>", "&#60;/script>")
 
     @imap.logout
