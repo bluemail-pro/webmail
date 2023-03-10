@@ -15,6 +15,13 @@ class MessagesController < ApplicationController
       @messages << message if !message.attr['FLAGS'].include?(:Deleted)
     end
 
+    @messages = @messages.sort_by do
+      |m|
+      m.attr['INTERNALDATE']
+    end
+
+    @messages = @messages.reverse
+
     @mailboxes = @imap.list("", "*").map {|f| f.name}
 
     @imap.logout
