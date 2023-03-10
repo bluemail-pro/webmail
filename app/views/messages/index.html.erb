@@ -13,13 +13,16 @@
 <div id="messages" style="width:100%">
   <table style="width:100%">
     <tr style="width:100%">
-      <th style="width:40%">
+      <th style="width:25%">
         Subject
       </th>
-      <th style="width:40%">
+      <th style="width:30%">
         From
       </th>
-      <th style="width:20%">
+      <th style="width:30%">
+        To
+      </th>
+      <th style="width:15%">
         Date
       </th>
     </tr>
@@ -37,6 +40,12 @@
           <% message.attr['ENVELOPE'].from.each do |from| %>
             <% addr = "#{from.mailbox}@#{from.host}" %>
             <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
+          <% end %>
+        </td>
+        <td>
+          <% message.attr['ENVELOPE'].to.each do |to| %>
+            <% addr = "#{to.mailbox}@#{to.host}" %>
+            <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
           <% end %>
         </td>
         <td>
