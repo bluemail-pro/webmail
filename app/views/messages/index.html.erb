@@ -38,7 +38,7 @@
         <td>
           <%  @style="" %>
           <% @style="font-weight: bold;" if !message.attr['FLAGS'].include?(:Seen) %>
-          <%= link_to message.attr['ENVELOPE'].subject.to_s, message_path(@selected_mailbox, Base64.strict_encode64(msgid)), style: @style %>
+          <%= link_to (message.attr['ENVELOPE'].subject || "<i>No Subject</i>".html_safe), message_path(@selected_mailbox, Base64.strict_encode64(msgid)), style: @style %>
         </td>
         <td>
           <% message.attr['ENVELOPE'].from.to_a.each do |from| %>
