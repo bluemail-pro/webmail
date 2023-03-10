@@ -39,7 +39,7 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if email.deliver
         imap = Net::IMAP.new('mail.bluemail.pro', 993, true, nil, false)
-        imap.login('matthias', 'my_password_')
+        imap.login(session[:imapuser], session[:imappass])
         imap.append("Sent", email.to_s, [:Seen])
         imap.logout
         imap.disconnect
