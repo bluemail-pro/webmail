@@ -9,5 +9,5 @@
 <%= @message_contents.html_safe %>
 
 <div>
-  <%= link_to "Back to messages", messages_path %>
+  <%= link_to "Back to messages", messages_path + "?mailbox=#{@selected_mailbox}" %>
 </div>

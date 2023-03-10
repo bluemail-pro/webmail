@@ -2,6 +2,12 @@
 
 <h1>Messages</h1>
 
+<% @mailboxes.each do |f| %>
+  <%= link_to f, "?mailbox=#{f}" %>
+<% end %>
+
+<br>
+
 <%= link_to "New message", new_message_path %>
 
 <div id="messages">

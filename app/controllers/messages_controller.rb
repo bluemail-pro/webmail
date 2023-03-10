@@ -14,13 +14,16 @@ class MessagesController < ApplicationController
       @messages << @imap.fetch(message_id, 'ALL')[0]
     end
 
+    @mailboxes = @imap.list("", "*").map {|f| f.name}
+
     @imap.logout
     @imap.disconnect
   end
 
   # GET /messages/1 or /messages/1.json
   def show
-    @imap.select(params[:mailbox])
+    @selected_mailbox = params[:mailbox]
+    @imap.select(@selected_mailbox)
     message_id = @imap.search(['HEADER', 'Message-ID', Base64.decode64(params[:msgid])])[0]
     @message = @imap.fetch(message_id, 'ALL')
     message_rfc822 = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
