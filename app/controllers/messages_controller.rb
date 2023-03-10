@@ -4,7 +4,21 @@ class MessagesController < ApplicationController
 
   # GET /messages or /messages.json
   def index
-    @messages = Message.all
+    imap = Net::IMAP.new('mail.bluemail.pro', 993, true, nil, false)
+    imap.login(session[:imapuser], session[:imappass])
+
+    @mailboxes = imap.list("", "*").map{|mbox| mbox.name}
+
+    @selected_mailbox = params[:mailbox] || "INBOX"
+    imap.select(@selected_mailbox)
+
+    @messages = []
+    imap.search(['ALL']).each do |message_id|
+      @messages << imap.fetch(message_id, 'ALL')[0]
+    end
+
+    imap.logout
+    imap.disconnect
   end
 
   # GET /messages/1 or /messages/1.json

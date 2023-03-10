@@ -6,10 +6,7 @@
 
 <div id="messages">
   <% @messages.each do |message| %>
-    <%= render message %>
-    <p>
-      <%= link_to "Show this message", message %>
-    </p>
+    <p><%= message.attr['ENVELOPE'].subject %></p>
   <% end %>
 </div>
 
