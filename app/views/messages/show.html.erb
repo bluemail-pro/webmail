@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<%= @message_contents %>
+<%= @message_contents.html_safe %>
 
 <div>
   <%= link_to "Back to messages", messages_path %>
