@@ -68,7 +68,7 @@ class MessagesController < ApplicationController
         @imap.logout
         @imap.disconnect
 
-        format.html { redirect_to message_url(@message), notice: "Message sent" }
+        format.html { redirect_to messages_path, notice: "Message sent" }
         format.json { render :show, status: :created, location: @message }
       else
         format.html { render :new, status: :unprocessable_entity }
