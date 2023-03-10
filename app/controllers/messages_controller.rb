@@ -1,28 +1,33 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
+  before_action :login_imap
 
   # GET /messages or /messages.json
   def index
-    imap = Net::IMAP.new('mail.bluemail.pro', 993, true, nil, false)
-    imap.login(session[:imapuser], session[:imappass])
-
-    @mailboxes = imap.list("", "*").map{|mbox| mbox.name}
+    @mailboxes = @imap.list("", "*").map{|mbox| mbox.name}
 
     @selected_mailbox = params[:mailbox] || "INBOX"
-    imap.select(@selected_mailbox)
+    @imap.select(@selected_mailbox)
 
     @messages = []
-    imap.search(['ALL']).each do |message_id|
-      @messages << imap.fetch(message_id, 'ALL')[0]
+    @imap.search(['ALL']).each do |message_id|
+      @messages << @imap.fetch(message_id, 'ALL')[0]
     end
 
-    imap.logout
-    imap.disconnect
+    @imap.logout
+    @imap.disconnect
   end
 
   # GET /messages/1 or /messages/1.json
   def show
+    @imap.select(params[:mailbox])
+    message_id = @imap.search(['HEADER', 'Message-ID', Base64.decode64(params[:msgid])])[0]
+    @message = @imap.fetch(message_id, 'ALL')
+    message_rfc822 = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
+    @message_contents = Mail.read_from_string(message_rfc822).body.parts[0].to_s.split("\r\n\r\n")[1]
+
+    @imap.logout
+    @imap.disconnect
   end
 
   # GET /messages/new
@@ -52,11 +57,9 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if email.deliver
-        imap = Net::IMAP.new('mail.bluemail.pro', 993, true, nil, false)
-        imap.login(session[:imapuser], session[:imappass])
-        imap.append("Sent", email.to_s, [:Seen])
-        imap.logout
-        imap.disconnect
+        @imap.append("Sent", email.to_s, [:Seen])
+        @imap.logout
+        @imap.disconnect
 
         format.html { redirect_to message_url(@message), notice: "Message sent" }
         format.json { render :show, status: :created, location: @message }
@@ -69,10 +72,10 @@ class MessagesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_message
-      @message = Message.find(params[:id])
+    def login_imap
+      @imap = Net::IMAP.new('mail.bluemail.pro', 993, true, nil, false)
+      @imap.login(session[:imapuser], session[:imappass])
     end
-
     # Only allow a list of trusted parameters through.
     def message_params
       params.require(:message).permit(:to, :subject, :body, :content_type)

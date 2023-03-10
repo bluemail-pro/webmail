@@ -6,7 +6,8 @@
 
 <div id="messages">
   <% @messages.each do |message| %>
-    <p><%= message.attr['ENVELOPE'].subject %></p>
+    <%= link_to message.attr['ENVELOPE'].subject, message_path(@selected_mailbox, Base64.strict_encode64(message.attr['ENVELOPE'].message_id)) %>
+    <br>
   <% end %>
 </div>
 
