@@ -3,7 +3,11 @@
 <h1>Messages</h1>
 
 <% @mailboxes.each do |f| %>
-  <%= link_to f, "?mailbox=#{f}" %>
+  <% if f == @selected_mailbox %>
+    <%= f %>
+  <% else %>
+    <%= link_to f, "?mailbox=#{f}" %>
+  <% end %>
 <% end %>
 
 <br>
