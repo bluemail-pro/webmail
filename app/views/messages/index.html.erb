@@ -11,10 +11,28 @@
 <%= link_to "New message", new_message_path %>
 
 <div id="messages">
-  <% @messages.each do |message| %>
-    <% msgid = message.attr['ENVELOPE'].message_id %>
-    <%= link_to message.attr['ENVELOPE'].subject, message_path(@selected_mailbox, Base64.strict_encode64(msgid)) %>
-    <br>
-  <% end %>
-</div>
+  <table>
+    <tr>
+      <th>
+        Subject
+      </th>
+      <th>
+        From
+      </th>
+    </tr>
 
+    <% @messages.each do |message| %>
+      <% msgid = message.attr['ENVELOPE'].message_id %>
+
+      <tr>
+        <td>
+          <%= link_to message.attr['ENVELOPE'].subject, message_path(@selected_mailbox, Base64.strict_encode64(msgid)) %>
+        </td>
+        <td>
+          <% from = message.attr['ENVELOPE'].from[0] %>
+          <%= from.name %> &#60;<%= from.mailbox %>@<%= from.host %>&#62;
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
