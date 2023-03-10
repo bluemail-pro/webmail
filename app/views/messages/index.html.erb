@@ -29,7 +29,9 @@
 
       <tr>
         <td>
-          <%= link_to message.attr['ENVELOPE'].subject, message_path(@selected_mailbox, Base64.strict_encode64(msgid)) %>
+          <%  @style="" %>
+          <% @style="font-weight: bold;" if !message.attr['FLAGS'].include?(:Seen) %>
+          <%= link_to message.attr['ENVELOPE'].subject, message_path(@selected_mailbox, Base64.strict_encode64(msgid)), style: @style %>
         </td>
         <td>
           <% from = message.attr['ENVELOPE'].from[0] %>
