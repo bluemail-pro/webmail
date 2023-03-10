@@ -30,7 +30,8 @@
         </td>
         <td>
           <% from = message.attr['ENVELOPE'].from[0] %>
-          <%= from.name %> &#60;<%= from.mailbox %>@<%= from.host %>&#62;
+          <% addr = "#{from.mailbox}@#{from.host}" %>
+          <%= link_to "#{from.name} <#{addr}>", new_message_path + "?to=#{addr}" %>
         </td>
       </tr>
     <% end %>

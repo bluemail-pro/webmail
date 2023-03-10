@@ -38,6 +38,7 @@ class MessagesController < ApplicationController
 
   # GET /messages/new
   def new
+    @to = params[:to]
     @message = Message.new
   end
 
