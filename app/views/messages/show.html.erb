@@ -1,5 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
+<% @parts.each_with_index do |p, i| %>
+  <%= link_to p.header["Content-Type"].to_s, "?part=#{i}" %>
+<% end %>
+
+<br>
+
 <%= @message_contents.html_safe %>
 
 <div>
