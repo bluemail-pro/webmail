@@ -35,9 +35,20 @@ class MessagesController < ApplicationController
     message_id = @imap.search(['HEADER', 'Message-ID', Base64.decode64(params[:msgid])])[0]
     @message = @imap.fetch(message_id, 'ALL')
     message_rfc822 = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
-    @part = params[:part].to_i || 0
-    @parts = Mail.read_from_string(message_rfc822).part
-    @message_contents = Mail.read_from_string(message_rfc822).part[@part].body.to_s.gsub("\n", "<br>").gsub("<script", "&#60;script").gsub("</script>", "&#60;/script>")
+    @rawmsg = message_rfc822
+
+    @message = Mail.read_from_string(message_rfc822)
+
+    @multipart = @message.multipart?
+
+    if @multipart
+      @part_num = params[:part].to_i || 0
+      @part = @message.parts[@part_num]
+      @parts = @message.parts
+      @body = @part.body.to_s
+    else
+      @body = @message.body.to_s
+    end
 
     @imap.logout
     @imap.disconnect

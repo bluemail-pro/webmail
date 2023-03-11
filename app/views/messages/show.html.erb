@@ -1,13 +1,15 @@
 <p style="color: green"><%= notice %></p>
 
-<% @parts.each_with_index do |p, i| %>
-  <%= link_to p.header["Content-Type"].to_s, "?part=#{i}" %>
+<% if @multipart  %>
+  <% @parts.each_with_index do |p, i| %>
+    <%= link_to p.content_type, "?part=#{i}" %>
+  <% end %>
 <% end %>
 
-<br>
-
-<%= @message_contents.html_safe %>
+<%= @body.html_safe %>
 
 <div>
   <%= link_to "Back to messages", messages_path + "?mailbox=#{@selected_mailbox}" %>
 </div>
+
+<%= console %>
