@@ -8,29 +8,36 @@
   <br>
 <% end %>
 
-<h3><%= @message.subject %></h3>
+<div class="message">
+  <div class="message-header">
+  <div class="message-header-contents">
+    <h3><%= @message.subject %></h3>
 
-<p>From:
-<% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |from| %>
-  <% addr = "#{from.mailbox}@#{from.host}" %>
-  <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
-<% end %>
-<br>
-To:
-<% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |to| %>
-  <% addr = "#{to.mailbox}@#{to.host}" %>
-  <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
-<% end %>
-</p>
+    <p>From:
+    <% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |from| %>
+      <% addr = "#{from.mailbox}@#{from.host}" %>
+      <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
+    <% end %>
+    <br>
+    To:
+    <% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |to| %>
+      <% addr = "#{to.mailbox}@#{to.host}" %>
+      <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
+    <% end %>
+    </p>
+  </div>
+  </div>
 
-<iframe
-  sandbox="
-    allow-downloads
-    allow-forms
-  "
-  class="message-iframe"
-  src="data:text/html;base64,<%= Base64.strict_encode64 @body %>">
-</iframe>
+  <iframe
+    sandbox="
+             allow-downloads
+             allow-forms
+             "
+    class="message-iframe"
+    frameBorder="0"
+    src="data:text/html;base64,<%= Base64.strict_encode64 @body %>">
+  </iframe>
+</div>
 
 <div>
   <%= link_to "Back to messages", messages_path + "?mailbox=#{@selected_mailbox}" %>

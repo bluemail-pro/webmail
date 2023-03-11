@@ -23,6 +23,25 @@ table, th, td {
   border-collapse: collapse;
 }
 .message-iframe {
-  height: 30%;
   width: 100%;
+  height: 20em;
+
+  border: 1px solid black;
+  border-color: black;
+}
+.message-header {
+  width: 100%;
+  margin-bottom: 1em;
+
+  border: 1px solid black;
+  border-color: black;
+}
+.message-header-contents {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+.message {
+  width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
 }
