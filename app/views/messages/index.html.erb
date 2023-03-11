@@ -43,17 +43,17 @@
         <td>
           <% message.attr['ENVELOPE'].from.to_a.each do |from| %>
             <% addr = "#{from.mailbox}@#{from.host}" %>
-            <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
+            <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{from.name.to_s+?<+addr+?>}" %>&#62;
           <% end %>
         </td>
         <td>
           <% message.attr['ENVELOPE'].to.to_a.each do |to| %>
             <% addr = "#{to.mailbox}@#{to.host}" %>
-            <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{addr}" %>&#62;
+            <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{to.name.to_s+?<+addr+?>}" %>&#62;
           <% end %>
         </td>
         <td>
-          <%= message.attr['INTERNALDATE'].to_datetime.strftime("%a. %b %e, %Y %l:%M %p") %>
+          <%= message.attr['INTERNALDATE'].to_datetime.in_time_zone(ActiveSupport::TimeZone.new("Pacific Time (US & Canada)")).strftime("%a. %b %e, %Y %l:%M %p %Z") %>
         </td>
       </tr>
     <% end %>
