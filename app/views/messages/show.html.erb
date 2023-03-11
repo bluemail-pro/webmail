@@ -38,7 +38,7 @@
              "
     class="message-iframe"
     frameBorder="0"
-    src="data:text/html;base64,<%= Base64.strict_encode64 @body %>">
+    src="data:text/html;base64,<%= Base64.strict_encode64 @body.gsub("\n", "<br>") %>">
   </iframe>
 </div>
 
