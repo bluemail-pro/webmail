@@ -22,3 +22,7 @@ table, th, td {
   border-color: black;
   border-collapse: collapse;
 }
+.message-iframe {
+  height: 30%;
+  width: 100%;
+}
