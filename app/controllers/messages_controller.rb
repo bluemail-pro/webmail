@@ -33,7 +33,7 @@ class MessagesController < ApplicationController
     @selected_mailbox = params[:mailbox]
     @imap.select(@selected_mailbox)
     message_id = @imap.search(['HEADER', 'Message-ID', Base64.decode64(params[:msgid])])[0]
-    @message = @imap.fetch(message_id, 'ALL')
+    @imap_message = @imap.fetch(message_id, 'ALL')
     message_rfc822 = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
     @rawmsg = message_rfc822
 
