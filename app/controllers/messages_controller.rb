@@ -51,7 +51,7 @@ class MessagesController < ApplicationController
 
   # POST /messages or /messages.json
   def create
-    @message = Message.new(message_params.except(:content_type))
+    @message = Message.new(message_params.except(:content_type, :bcc))
     @message.user = current_user
     @message.from = "#{current_user.name} <#{current_user.email}>"
 
@@ -67,7 +67,7 @@ class MessagesController < ApplicationController
 
     content_type = content_types[message_params[:content_type]]
 
-    email=UserMessagesMailer.send_message(@message.from, message_params[:to], message_data, content_type: content_type)
+    email=UserMessagesMailer.send_message(@message.from, message_params[:to], message_data, content_type: content_type, bcc: message_params[:bcc])
 
     respond_to do |format|
       if email.deliver
@@ -92,6 +92,6 @@ class MessagesController < ApplicationController
     end
     # Only allow a list of trusted parameters through.
     def message_params
-      params.require(:message).permit(:to, :subject, :body, :content_type)
+      params.require(:message).permit(:to, :bcc, :subject, :body, :content_type)
     end
 end
