@@ -3,14 +3,26 @@
 <div class="message">
   <div class="message-header">
     <div class="message-header-contents">
-      <h3><%= @message.subject %></h3>
-
+      <h3 style="margin-bottom:0"><%= @message.subject %></h3>
       <% from_addrs = [] %>
       <% to_addrs = [] %>
-      <p>From:
       <% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |from| %>
         <% addr = "#{from.mailbox}@#{from.host}" %>
         <% from_addrs << "#{from.name}<#{addr}>" %>
+      <% end %>
+      <% @imap_message[0].attr['ENVELOPE'].to.to_a.each do |to| %>
+        <% addr = "#{to.mailbox}@#{to.host}" %>
+        <% to_addrs << "#{to.name}<#{addr}>" %>
+      <% end %>
+
+      |
+      <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
+      |
+      <%= link_to "Reply All", new_message_path + "?to=#{from_addrs.join(" ") + " " + to_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
+      |
+      <p>From:
+      <% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |from| %>
+        <% addr = "#{from.mailbox}@#{from.host}" %>
         <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{from.name.to_s+?<+addr+?>}" %>&#62;
       <% end %>
 
@@ -18,7 +30,6 @@
       To:
       <% @imap_message[0].attr['ENVELOPE'].to.to_a.each do |to| %>
         <% addr = "#{to.mailbox}@#{to.host}" %>
-        <% to_addrs << "#{to.name}<#{addr}>" %>
         <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{to.name.to_s+?<+addr+?>}" %>&#62;
       <% end %>
       <br>
@@ -27,18 +38,16 @@
       </p>
       <% if @multipart  %>
         <h4 style="margin-bottom:0">View in</h4>
+        |
         <% @parts.each_with_index do |p, i| %>
           <% if i == @part_num %>
             <%= p.content_type.split("; ")[0] %>
           <% else %>
             <%= link_to p.content_type.split("; ")[0], "?part=#{i}" %>
           <% end %>
-          <br>
+          |
         <% end %>
       <% end %>
-
-      <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
-      <%= link_to "Reply All", new_message_path + "?to=#{from_addrs.join(" ") + " " + to_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
     </div>
   </div>
 
