@@ -66,6 +66,14 @@ class MessagesController < ApplicationController
       @charset = @message.content_type.split("; ")[1] || "utf-8"
     end
 
+    from = @imap_message[0].attr['ENVELOPE'].from[0]
+
+      @reply_text = Base64.strict_encode64("\n\nOn " \
+        "#{@imap_message[0].attr['INTERNALDATE'].to_datetime.in_time_zone(ActiveSupport::TimeZone.new("Pacific Time (US & Canada)")).strftime("%a. %b %e, %Y %l:%M %p %Z")} " \
+        "#{from.name} <#{from.mailbox}@#{from.host}> wrote:\n" \
+        "#{@body.split("\n").map{|l| "#{"> " if @content_type == "text/plain"}#{l}"}.join("\n")}"
+      )
+
     @imap.logout
     @imap.disconnect
   end
