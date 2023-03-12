@@ -18,10 +18,17 @@ class MessagesController < ApplicationController
     @sort = params["sort"] || "date"
     @sort_reverse = params["sort_reverse"] == "true"
 
-    @messages = @messages.sort_by do
-      |m|
-      m.attr['INTERNALDATE'] if @sort == "date"
-      m.attr['ENVELOPE'].subject.to_s.downcase if @sort == "subject"
+
+    if @sort == "date"
+      @messages = @messages.sort_by do
+        |m|
+        m.attr['INTERNALDATE'].to_datetime
+      end
+    elsif @sort == "subject"
+      @messages = @messages.sort_by do
+        |m|
+        m.attr['ENVELOPE'].subject.to_s.downcase
+      end
     end
 
     @messages = @messages.reverse if !@sort_reverse
