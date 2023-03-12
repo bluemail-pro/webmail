@@ -18,7 +18,7 @@
   <table style="width:100%">
     <tr style="width:100%">
       <th style="width:25%">
-        Subject
+        <%= link_to "Subject", "?mailbox=#{@selected_mailbox}&sort_reverse=#{(@sort == "subject" && !@sort_reverse) ? "true" : "false"}&sort=subject" %>
       </th>
       <th style="width:30%">
         From
@@ -27,7 +27,7 @@
         To
       </th>
       <th style="width:15%">
-        Date
+        <%= link_to "Date", "?mailbox=#{@selected_mailbox}&sort_reverse=#{(@sort == "date" && !@sort_reverse) ? "true" : "false"}&sort=date" %>
       </th>
     </tr>
 

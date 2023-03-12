@@ -15,12 +15,16 @@ class MessagesController < ApplicationController
       @messages << message if !message.attr['FLAGS'].include?(:Deleted)
     end
 
+    @sort = params["sort"] || "date"
+    @sort_reverse = params["sort_reverse"] == "true"
+
     @messages = @messages.sort_by do
       |m|
-      m.attr['INTERNALDATE']
+      m.attr['INTERNALDATE'] if @sort == "date"
+      m.attr['ENVELOPE'].subject.to_s if @sort == "subject"
     end
 
-    @messages = @messages.reverse
+    @messages = @messages.reverse if !@sort_reverse
 
     @mailboxes = @imap.list("", "*").map {|f| f.name}
 
