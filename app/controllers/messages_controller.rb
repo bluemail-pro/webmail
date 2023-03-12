@@ -73,6 +73,7 @@ class MessagesController < ApplicationController
   # GET /messages/new
   def new
     @to = params[:to]
+    @body = Base64.decode64(params[:body]) if params[:body]
     @message = Message.new
 
     @imap.logout
