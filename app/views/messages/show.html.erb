@@ -12,7 +12,7 @@
       <% end %>
       <br>
       To:
-      <% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |to| %>
+      <% @imap_message[0].attr['ENVELOPE'].to.to_a.each do |to| %>
         <% addr = "#{to.mailbox}@#{to.host}" %>
         <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{to.name.to_s+?<+addr+?>}" %>&#62;
       <% end %>
