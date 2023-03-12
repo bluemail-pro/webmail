@@ -20,13 +20,13 @@
       <th style="width:25%">
         <%= link_to "Subject #{@sort == "subject" ? (@sort_reverse ? "↓" : "↑") : "↕"}", "?mailbox=#{@selected_mailbox}&sort_reverse=#{(@sort == "subject" && !@sort_reverse) ? "true" : "false"}&sort=subject", class: "black" %>
       </th>
-      <th style="width:30%">
+      <th style="width:29%">
         From
       </th>
-      <th style="width:30%">
+      <th style="width:29%">
         To
       </th>
-      <th style="width:15%">
+      <th style="width:17%">
         <%= link_to "Date #{@sort == "date" ? (@sort_reverse ? "↓" : "↑") : "↕"}", "?mailbox=#{@selected_mailbox}&sort_reverse=#{(@sort == "date" && !@sort_reverse) ? "true" : "false"}&sort=date", class: "black" %>
       </th>
     </tr>
