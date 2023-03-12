@@ -17,7 +17,7 @@
     </div>
   </div>
 
-    <%= form.text_area :body, class: "message-iframe" %>
+    <%= form.text_area :body, class: "message-iframe", value: "\n"+current_user.signature %>
 </div>
 
 
