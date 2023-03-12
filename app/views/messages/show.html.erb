@@ -34,7 +34,7 @@
   <%
     message_body = @body
     if @content_type == "text/html"
-      message_body = "<meta #{@charset}>" + message_body.gsub("\n", "<br>")
+      message_body = "<meta #{@charset}><base target='_parent'>" + message_body.gsub("\n", "<br>")
     end
   %>
 
