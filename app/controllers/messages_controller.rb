@@ -62,6 +62,9 @@ class MessagesController < ApplicationController
   def new
     @to = params[:to]
     @message = Message.new
+
+    @imap.logout
+    @imap.disconnect
   end
 
   # POST /messages or /messages.json

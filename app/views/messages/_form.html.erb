@@ -1,42 +1,26 @@
 <%= form_with(model: message) do |form| %>
-  <% if message.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>
+<div class="message">
+  <div class="message-header">
+    <div class="message-header-contents">
+      <%= form.text_field :subject, style: "width:100%;font-size:20px" %>
+      <br>
 
-      <ul>
-        <% message.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+      <p>
+      To:
+      <%= form.text_field :to, value: @to, style: "width: 100%;" %>
+      <br>
+      Bcc:
+      <%= form.text_field :bcc, style: "width: 100%" %>
+
+      <h4 style="margin-bottom:0">Message type</h4>
+      <%= form.select :content_type, ['Text', 'HTML'] %>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :to, style: "display: block" %>
-    <%= form.text_field :to, value: @to %>
   </div>
 
-  <div>
-    <%= form.label :bcc, style: "display: block" %>
-    <%= form.text_field :bcc %>
-  </div>
+    <%= form.text_area :body, class: "message-iframe" %>
+</div>
 
-  <div>
-    <%= form.label :subject, style: "display: block" %>
-    <%= form.text_field :subject %>
-  </div>
 
-  <div>
-    <%= form.label :type, style: "display: block" %>
-    <%= form.select :content_type, ['Text', 'HTML'] %>
-  </div>
+<%= form.submit "Send Message" %>
 
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.text_area :body %>
-  </div>
-
-  <div>
-    <%= form.submit "Send Message" %>
-  </div>
 <% end %>
