@@ -15,21 +15,20 @@
         <% to_addrs << "#{to.name}<#{addr}>" %>
       <% end %>
 
-      |
+      Actions:
       <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
       |
       <%= link_to "Reply All", new_message_path + "?to=#{from_addrs.join(" ") + " " + to_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
-      |
       <% if @multipart  %>
         <br>
-        |
+        View in: 
         <% @parts.each_with_index do |p, i| %>
           <% if i == @part_num %>
             <%= p.content_type.split("; ")[0] %>
           <% else %>
             <%= link_to p.content_type.split("; ")[0], "?part=#{i}" %>
           <% end %>
-          |
+          <%= "|" if i != @parts.length-1 %>
         <% end %>
       <% end %>
       <p>From:
