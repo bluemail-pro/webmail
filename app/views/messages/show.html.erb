@@ -6,17 +6,19 @@
       <h3><%= @message.subject %></h3>
 
       <% from_addrs = [] %>
+      <% to_addrs = [] %>
       <p>From:
       <% @imap_message[0].attr['ENVELOPE'].from.to_a.each do |from| %>
         <% addr = "#{from.mailbox}@#{from.host}" %>
         <% from_addrs << "#{from.name}<#{addr}>" %>
         <%= from.name %> &#60;<%= link_to addr, new_message_path + "?to=#{from.name.to_s+?<+addr+?>}" %>&#62;
       <% end %>
-      <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}" %>
+
       <br>
       To:
       <% @imap_message[0].attr['ENVELOPE'].to.to_a.each do |to| %>
         <% addr = "#{to.mailbox}@#{to.host}" %>
+        <% to_addrs << "#{to.name}<#{addr}>" %>
         <%= to.name %> &#60;<%= link_to addr, new_message_path + "?to=#{to.name.to_s+?<+addr+?>}" %>&#62;
       <% end %>
       <br>
@@ -34,6 +36,9 @@
           <br>
         <% end %>
       <% end %>
+
+      <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}" %>
+      <%= link_to "Reply All", new_message_path + "?to=#{from_addrs.join(" ") + " " + to_addrs.join(" ")}&body=#{u @reply_text}" %>
     </div>
   </div>
 
