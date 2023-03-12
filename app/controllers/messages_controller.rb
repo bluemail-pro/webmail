@@ -70,8 +70,8 @@ class MessagesController < ApplicationController
 
       @reply_text = Base64.strict_encode64("\n\nOn " \
         "#{@imap_message[0].attr['INTERNALDATE'].to_datetime.in_time_zone(ActiveSupport::TimeZone.new("Pacific Time (US & Canada)")).strftime("%a. %b %e, %Y %l:%M %p %Z")} " \
-        "#{from.name} <#{from.mailbox}@#{from.host}> wrote:\n" \
-        "#{@body.split("\n").map{|l| "#{"> " if @content_type == "text/plain"}#{l}"}.join("\n")}"
+        "#{from.name} <#{from.mailbox}@#{from.host}> wrote:\n#{"<blockquote>" if @content_type == "text/html"}" \
+        "#{@body.split("\n").map{|l| "#{"> " if @content_type == "text/plain"}#{l}"}.join("\n")}#{"</blockquote>" if @content_type == "text/html"}"
       )
 
     @imap.logout
