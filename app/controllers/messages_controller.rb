@@ -82,6 +82,7 @@ class MessagesController < ApplicationController
   def new
     @to = params[:to]
     @body = Base64.decode64(params[:body]) if params[:body]
+    @subject = params[:subject]
     @message = Message.new
 
     @imap.logout
