@@ -17,6 +17,9 @@ a {
   color:#1565d4;
   text-decoration:none;
 }
+a.black {
+  color: black;
+}
 table, th, td {
   border: 1px solid black;
   border-color: black;
