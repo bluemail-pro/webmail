@@ -21,10 +21,11 @@ class MessagesController < ApplicationController
     @messages = @messages.sort_by do
       |m|
       m.attr['INTERNALDATE'] if @sort == "date"
-      m.attr['ENVELOPE'].subject.to_s if @sort == "subject"
+      m.attr['ENVELOPE'].subject.to_s.downcase if @sort == "subject"
     end
 
     @messages = @messages.reverse if !@sort_reverse
+    @messages = @messages.reverse if @sort == "subject"
 
     @mailboxes = @imap.list("", "*").map {|f| f.name}
 
