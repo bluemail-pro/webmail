@@ -46,8 +46,12 @@ class MessagesController < ApplicationController
       @part = @message.parts[@part_num]
       @parts = @message.parts
       @body = @part.body.to_s
+      @content_type = @part.content_type.split("; ")[0] || "text/html"
+      @charset = @part.content_type.split("; ")[1] || "utf-8"
     else
       @body = @message.body.to_s
+      @content_type = @message.content_type.split("; ")[0] || "text/html"
+      @charset = @message.content_type.split("; ")[1] || "utf-8"
     end
 
     @imap.logout
