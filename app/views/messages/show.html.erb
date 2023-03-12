@@ -1,13 +1,5 @@
 <p style="color: green"><%= notice %></p>
 
-<% if @multipart  %>
-  <% @parts.each_with_index do |p, i| %>
-    <%= link_to p.content_type, "?part=#{i}" %>
-  <% end %>
-
-  <br>
-<% end %>
-
 <div class="message">
   <div class="message-header">
     <div class="message-header-contents">
@@ -28,6 +20,17 @@
       Date:
       <%= @imap_message[0].attr['INTERNALDATE'].to_datetime.in_time_zone(ActiveSupport::TimeZone.new("Pacific Time (US & Canada)")).strftime("%a. %b %e, %Y %l:%M %p %Z") %>
       </p>
+      <% if @multipart  %>
+        <h4 style="margin-bottom:0">View in</h4>
+        <% @parts.each_with_index do |p, i| %>
+          <% if i == @part_num %>
+            <%= p.content_type.split("; ")[0] %>
+          <% else %>
+            <%= link_to p.content_type.split("; ")[0], "?part=#{i}" %>
+          <% end %>
+          <br>
+        <% end %>
+      <% end %>
     </div>
   </div>
 
