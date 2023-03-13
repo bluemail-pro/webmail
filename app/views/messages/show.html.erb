@@ -16,9 +16,9 @@
       <% end %>
 
       Actions:
-      <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
+      <%= link_to "Reply", new_message_path + "?to=#{from_addrs.join(" ")}&body=#{u @reply_text}&subject=#{"Re: " if @message.subject[0..3] != "Re: "}#{@message.subject}" %>
       |
-      <%= link_to "Reply All", new_message_path + "?to=#{from_addrs.join(" ") + " " + to_addrs.join(" ")}&body=#{u @reply_text}&subject=Re: #{@message.subject}" %>
+      <%= link_to "Reply All", new_message_path + "?to=#{from_addrs.join(" ") + " " + to_addrs.join(" ")}&body=#{u @reply_text}&subject=#{"Re: " if @message.subject[0..3] != "Re: "}#{@message.subject}" %>
       <% if @multipart  %>
         <br>
         View in: 
